@@ -1,0 +1,8 @@
+Website to Download Go
+----> https://golang.org/dl/
+
+specify the location in .bash_profile
+----> export GOPATH=/Users/suryadevarav/Downloads/BootCamp_Downloads/Kubernetes
+
+Check using
+----> go version
