@@ -1,0 +1,37 @@
+An youtube Link
+----> https://www.youtube.com/watch?v=DC7NECq3Ghs
+
+The following instructions shows how to setup a simple single node kubernetes cluster locally using docker
+
+Step one: etcd
+----> docker run --net=host -d kubernetes/etcd:2.0.5.1 /usr/local/bin/etcd --addr=127.0.0.1:4001 --bind-addr=0.0.0.0:4001 --data-dir=/var/etcd/data
+
+Step two: Run the Master:
+This actually runs the kubelet which in turn runs a pod that contains other master components
+----> docker run --net=host -d -v /var/run/docker.sock:/var/run/docker.sock gcr.io/google_containers/hyperkube:v0.14.1 /hyperkube kubelet --api_servers=http://localhost:8080 --v=2 --addr=0.0.0.0 --enable_server --hostname_override=127.0.0.1 --config=/etc/kubernetes/manifests
+
+Step Three: Run the proxy
+----> docker run -d --net=host --privileged gcr.io/google_containers/hyperkube:v0.14.1 /hyperkube --proxy --master=http://127.0.0.1:8080 --v=2c10fd4g1df07771e026b3d8b187287930543eafb2fb623f6b3b605b115f53f78
+
+1. Install kubectl binary via curl
+----> curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.11.0/bin/darwin/amd64/kubectl
+2.Make the kubectl binary executable
+----> chmod +x ./kubectl
+
+
+//Proper Installatiom=n of Kubernetes
+
+Installing HomeBrew
+rm -rf /usr/local/.git
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Installing Minikube
+1. brew install kubectl
+2. brew cask install minikube
+3. brew install docker-machine-driver-xhyve
+4. minikube version
+5. sudo chown root:wheel /usr/local/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+6. sudo chmod u+s /usr/local/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+7. minikube start --vm-driver=xhyve
+8. kubectl config current-context
+9. kubectl get nodes
